@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import { useNavigate  } from 'react-router-dom'
 
-import {post} from './Controller/service'
+import {signup} from './Controller/service'
 
 import DatePicker from "react-datepicker";
 
@@ -21,8 +21,8 @@ const SignUp = () => {
 
     const  signup = async (e) => {
         e.preventDefault();
-        var user = User(email,password,fname,lname,gender,dobDate)
-        await post(user).then(res => {
+        var user = {email,password,fname,lname,gender,dobDate}
+        await signup(user).then(res => {
             setStatus(res)
             navigate("/")
         })
@@ -52,10 +52,10 @@ const SignUp = () => {
                         }}/> Other
                     </div>
                     <div>
-                        <DatePicker selected={startDate} onChange={(dobDate) => SetdobDate(dobDate)} required={true}/>
+                        <DatePicker selected={dobDate} onChange={(dobDate) => SetdobDate(dobDate)} required={true}/>
                     </div>
 
-                    <Button variant="success" onClick={login}>LogIn</Button>
+                    <Button variant="success" onClick={signup}>LogIn</Button>
                 </form>
             </div>
             <div className='col-4'>

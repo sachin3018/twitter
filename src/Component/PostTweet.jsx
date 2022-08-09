@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 
 import { useNavigate  } from 'react-router-dom'
 import {useLocation} from 'react-router-dom'
+
+import { postTweet } from './Controller/service'
 const PostTweet = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,8 +18,20 @@ const PostTweet = () => {
     })
 
 
-    const post = () => {
-        
+    const post = async () => {
+        const tweetPost = {
+            tweetBody : tweet,
+            userId : localStorage.setItem("userId")
+        };
+        await postTweet(tweetPost)
+                        .then(res => {
+                            if(res.status === 200){
+                                navigate("/mainPage")
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
     }
 
     return(
@@ -35,7 +49,7 @@ const PostTweet = () => {
                     />
                 </div>
                 <div>
-                    <Button variant="success" onClick={post}>LogIn</Button>
+                    <Button variant="success" onClick={post}>POST</Button>
                 </div>
             </div>
             <div className='col-xl-3'>

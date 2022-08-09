@@ -3,18 +3,25 @@ import React, { useEffect } from 'react'
 
 import { useNavigate  } from 'react-router-dom'
 
+import { viewAllTweet } from './Controller/service'
 const ViewTweet = () => {
     const navigate = useNavigate();
+    const tweetList = []
+
 
     useEffect(() => {
-        if(localStorage.getItem("token") === null){
-            navigate("/")
-        }
+        viewAllTweet(localStorage.getItem("page"))
+                         .then(res => {
+                            tweetList = res.tweet
+                         })
+                         .catch(err => {
+                            console.log("something went wrong");
+                         })
     })
 
 
     const postTweet = () => {
-        navigate("/post-tweet",{state : {"name" : "sachin"}})
+        navigate("/post-tweet")
     }
 
     return(
@@ -23,20 +30,16 @@ const ViewTweet = () => {
                     {localStorage.getItem("name")}
             </div>
             <div className='col-xl-6'>
-            <   div className='row m-5'>
-                    <Button variant="primary" onClick={postTweet}>Post Tweet</Button>
-                </div>
                 <div className='row m-5'>
-                    <Button variant="primary">View My Tweet</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">View All Tweet</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">View All User</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">Change Password</Button>
+                    {
+                        tweetList.map(tweet => {
+                            return(
+                                <div>
+                                  header or paragraph tag as the data returning from backend
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>

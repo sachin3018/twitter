@@ -1,10 +1,12 @@
 import Button from 'react-bootstrap/Button';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useNavigate  } from 'react-router-dom'
+import { changePassword } from './Controller/service'
 
 const ChangePassword = () => {
     const navigate = useNavigate();
+    const [password,setPassword] = useState('')
 
     useEffect(() => {
         if(localStorage.getItem("token") === null){
@@ -13,8 +15,12 @@ const ChangePassword = () => {
     })
 
 
-    const postTweet = () => {
-        navigate("/post-tweet",{state : {"name" : "sachin"}})
+    const changePasswordClick = async () => {
+        if(password !== null){
+            await changePassword(password).then(res => console.log(res)).catch(err => console.log(err));
+            navigate("/mainPage")
+        }
+        
     }
 
     return(
@@ -23,20 +29,11 @@ const ChangePassword = () => {
                     {localStorage.getItem("name")}
             </div>
             <div className='col-xl-6'>
-            <   div className='row m-5'>
-                    <Button variant="primary" onClick={postTweet}>Post Tweet</Button>
+                <div className='row m-5'>
+                    <input type="password" placeholder="Password" required={true} onChange={(e) => {setPassword(e.target.value)}} value={password} maxLength="20"/>
                 </div>
                 <div className='row m-5'>
-                    <Button variant="primary">View My Tweet</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">View All Tweet</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">View All User</Button>
-                </div>
-                <div className='row m-5'>
-                    <Button variant="primary">Change Password</Button>
+                    <Button variant="primary" onClick={changePasswordClick}>Update Password</Button>
                 </div>
             </div>
         </div>
